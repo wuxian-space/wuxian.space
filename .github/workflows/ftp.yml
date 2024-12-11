@@ -1,0 +1,22 @@
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4.2.2
+      - name: Upload ftp
+        uses: sebastianpopp/ftp-action@releases/v2
+        with:
+          host: ${{secrets.FTP_HOST}}
+          user: ${{secrets.FTP_USERNAME}}
+          password: ${{secrets.FTP_PASSWORD}}
+          localDir: .
+          remoteDir: .
+          options: "--delete"
